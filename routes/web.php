@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PeminjamanController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -72,6 +73,18 @@ Route::middleware('auth')->group(function () {
     */
     Route::resource('pegawai', PegawaiController::class);
 
+
+    Route::resource('peminjaman', PeminjamanController::class);
+    Route::resource('peminjaman', PeminjamanController::class);
+
+    Route::post('/peminjaman/{peminjaman}/cetak',
+        [PeminjamanController::class, 'cetak']
+    )->name('peminjaman.cetak');
+
+    // extra actions
+    Route::post('/peminjaman/{peminjaman}/selesai', [PeminjamanController::class, 'selesai'])->name('peminjaman.selesai');
+    Route::post('/peminjaman/{peminjaman}/batal', [PeminjamanController::class, 'batal'])->name('peminjaman.batal');
+    Route::post('/peminjaman/{peminjaman}/cetak', [PeminjamanController::class, 'cetak'])->name('peminjaman.cetak');
 });
 
 require __DIR__.'/auth.php';

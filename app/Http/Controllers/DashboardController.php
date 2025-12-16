@@ -4,25 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Pegawai;
 use App\Models\Kendaraan;
-use App\Models\Transaksi;
-use App\Models\PencatatanTanggal;
+use App\Models\Peminjaman;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // Hitung data untuk ringkasan
         $totalPegawai = Pegawai::count();
         $totalKendaraan = Kendaraan::count();
-        $totalTransaksi = Transaksi::count();
-        $totalPencatatan = PencatatanTanggal::count();
+        $totalTransaksi = Peminjaman::count(); // <- PERBAIKI DISINI
+        $totalPencatatan = 0; // Jika nanti ada fitur lain
 
-        // Kirim data ke view
         return view('dashboard', compact(
             'totalPegawai',
             'totalKendaraan',
-            'totalTransaksi',
-            'totalPencatatan'
+            'totalTransaksi'
         ));
     }
 }

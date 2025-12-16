@@ -40,45 +40,49 @@ class KendaraanController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'pegawai_id' => 'required|exists:pegawai,id',
+        $validated = $request->validate([
+            'jenis' => 'required|string|max:50',
             'nomor_polisi' => 'required|string|max:50',
             'merk' => 'required|string|max:100',
             'tipe' => 'nullable|string|max:100',
             'tahun' => 'nullable|integer',
-            'status' => 'required|in:tersedia,dipinjam,maintenance',
             'nomor_rangka' => 'nullable|string',
             'nomor_mesin' => 'nullable|string',
-            'fungsi' => 'nullable|string',
-            'ket' => 'nullable|string',
+            'status' => 'required|in:tersedia,dipinjam,maintenance',
         ]);
 
-        Kendaraan::create($request->all());
+        Kendaraan::create($validated);
 
         return redirect()->route('kendaraan.index')
-            ->with('success','Data kendaraan berhasil ditambahkan.');
+            ->with('success','Data kendaraan berhasil ditambahkan!');
     }
 
 
-    public function update(Request $request, Kendaraan $kendaraan)
+
+    public function edit($id)
     {
-        $request->validate([
-            'pegawai_id' => 'required|exists:pegawai,id',
+        $kendaraan = Kendaraan::findOrFail($id);
+
+        return view('kendaraan.edit', compact('kendaraan'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
             'jenis' => 'required',
+            'nomor_polisi' => 'required',
             'merk' => 'required',
             'tipe' => 'required',
-            'tahun' => 'required|integer',
-            'nomor_polisi' => 'required',
-            'nomor_rangka' => 'nullable|string',
-            'nomor_mesin' => 'nullable|string',
-            'fungsi' => 'nullable|string',
-            'ket' => 'nullable|string',
+            'tahun' => 'required|numeric',
+            'nomor_rangka' => 'nullable',
+            'nomor_mesin' => 'nullable',
+            'status' => 'required',
         ]);
 
-        $kendaraan->update($request->all());
+        $kendaraan = Kendaraan::findOrFail($id);
+        $kendaraan->update($validated);
 
-        return redirect()->route('kendaraan.index')
-            ->with('success','Data kendaraan berhasil diperbarui.');
+        return redirect()->route('kendaraan.index')->with('success', 'Data kendaraan berhasil diperbarui!');
     }
 
 
