@@ -2,7 +2,7 @@
     <div>
         <div>
             <h2 class="text-3xl font-bold text-amber-800 mb-2">Buat Akun Baru</h2>
-            <p class="text-amber-700 mb-8 text-sm">Daftar untuk mengakses sistem pencatatan kendaraan dinas</p>
+            <p class="text-amber-700 mb-8 text-sm">Daftar untuk mengakses sistem peminjaman kendaraan dinas</p>
 
             <form method="POST" action="{{ route('register') }}">
                 @csrf

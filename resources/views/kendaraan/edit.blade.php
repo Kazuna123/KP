@@ -56,7 +56,7 @@
 
                 <div class="col-md-4">
                     <label class="fw-semibold">Status</label>
-                    <select name="status" class="form-control">
+                    <select name="status" class="form-select">
                         <option value="tersedia" {{ $kendaraan->status == 'tersedia' ? 'selected' : '' }}>Tersedia</option>
                         <option value="dipinjam" {{ $kendaraan->status == 'dipinjam' ? 'selected' : '' }}>Dipinjam</option>
                         <option value="maintenance" {{ $kendaraan->status == 'maintenance' ? 'selected' : '' }}>Maintenance</option>

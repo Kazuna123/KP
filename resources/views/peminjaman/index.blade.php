@@ -13,22 +13,24 @@
             <div class="row g-3">
                 <div class="col-md-4">
                     <label class="fw-semibold">Pegawai</label>
-                    <select name="pegawai_id" class="form-control" required>
-                        <option value="">-- Pilih Pegawai --</option>
+                    <select name="pegawai_id" class="form-select select-search" required>
+                        <option value="">-- Pilih / Search Pegawai --</option>
                         @foreach($pegawais as $p)
-                        <option value="{{ $p->id }}">{{ $p->nama }} ({{ $p->nip }})</option>
+                            <option value="{{ $p->id }}">
+                                {{ $p->nama }} ({{ $p->nip }})
+                            </option>
                         @endforeach
                     </select>
                 </div>
 
                 <div class="col-md-4">
                     <label class="fw-semibold">Kendaraan</label>
-                    <select name="kendaraan_id" class="form-control" required>
-                        <option value="">-- Pilih Kendaraan --</option>
+                    <select name="kendaraan_id" class="form-select select-search" required>
+                        <option value="">-- Pilih / Search Kendaraan --</option>
                         @foreach($kendaraans as $k)
-                        <option value="{{ $k->id }}" {{ $k->status != 'tersedia' ? 'disabled' : '' }}>
-                             {{ $k->nomor_polisi }} — {{ $k->merk }} / {{ $k->tipe }} ({{ $k->status }})
-                        </option>
+                            <option value="{{ $k->id }}" {{ $k->status != 'tersedia' ? 'disabled' : '' }}>
+                                {{ $k->nomor_polisi }} — {{ $k->merk }} / {{ $k->tipe }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
@@ -45,16 +47,16 @@
                            value="{{ date('Y-m-d') }}" required>
                 </div>
 
-                <div class="col-md-2 d-flex align-items-end">
-                    <button class="btn btn-success w-100 shadow-btn">
-                        <i class="bi bi-plus-circle me-1"></i> Pinjam
-                    </button>
-                </div>
-
                 <div class="col-md-12">
                     <label class="fw-semibold">Keterangan</label>
                     <textarea name="keterangan" class="form-control" rows="2"
                         placeholder="Contoh: Perjalanan dinas ke Surabaya"></textarea>
+                </div>
+
+                <div class="col-md-2 d-flex align-items-end">
+                    <button class="btn btn-success w-100 shadow-btn">
+                        <i class="bi bi-plus-circle me-1"></i> Pinjam
+                    </button>
                 </div>
             </div>
         </form>
@@ -99,32 +101,45 @@
                     <td>{{ \Illuminate\Support\Str::limit($pm->keterangan, 40) }}</td>
 
                     <td>
-                        <div class="action-buttons d-flex flex-column gap-2">
+                        <div class="action-buttons d-flex justify-content-center gap-2">
 
-                            @if($pm->status === 'ongoing')
+                            @if($pm->status === 'dipinjam')
                             <form action="{{ route('peminjaman.selesai', $pm->id) }}" method="POST">
                                 @csrf
-                                <button class="btn-card btn-green">
+                                <button class="btn-card btn-green"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="left"
+                                        title="Selesaikan Peminjaman">
                                     <i class="bi bi-check-circle"></i>
                                 </button>
                             </form>
                             @endif
-
+                            
                             <a href="{{ route('peminjaman.edit', $pm->id) }}"
-                               class="btn-card btn-yellow">
+                                class="btn-card btn-yellow"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="left"
+                                title="Edit Data">
                                 <i class="bi bi-pencil-square"></i>
-                            </a>
+                             </a>
 
-                            <form action="{{ route('peminjaman.destroy', $pm->id) }}" method="POST"
-                                  onsubmit="return confirm('Yakin hapus?')">
+                            <form action="{{ route('peminjaman.destroy', $pm->id) }}" method="POST">
                                 @csrf @method('DELETE')
-                                <button class="btn-card btn-red">
+                                <button type="button"
+                                        class="btn-card btn-red"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="left"
+                                        title="Hapus Data Peminjaman"
+                                        onclick="hapusPeminjaman('{{ route('peminjaman.destroy', $pm->id) }}')">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </form>
 
                             <button class="btn-card btn-blue"
-                                onclick="openCetak({{ $pm->id }})">
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="left"
+                                    title="Cetak Data"
+                                    onclick="openCetak({{ $pm->id }})">
                                 <i class="bi bi-printer"></i>
                             </button>
 
@@ -138,6 +153,44 @@
             </table>
 
             {{ $peminjamans->links() }}
+        </div>
+    </div>
+    <!-- MODAL KONFIRMASI HAPUS -->
+    <div class="modal fade" id="hapusModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4 modal-brown">
+
+                <div class="modal-header modal-header-brown rounded-top-4">
+                    <h5 class="modal-title">
+                        <i class="bi bi-exclamation-triangle me-2"></i> Konfirmasi Hapus
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body text-center">
+                    <p class="mb-2 fw-semibold text-brown">
+                        Apakah Anda yakin ingin menghapus data peminjaman ini?
+                    </p>
+                    <small class="text-muted">
+                        Data yang dihapus tidak dapat dikembalikan.
+                    </small>
+                </div>
+
+                <div class="modal-footer justify-content-center gap-3">
+                    <button type="button" class="btn btn-outline-brown px-4" data-bs-dismiss="modal">
+                        Batal
+                    </button>
+
+                    <form id="formHapus" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-brown px-4">
+                            <i class="bi bi-trash me-1"></i> Hapus
+                        </button>
+                    </form>
+                </div>
+
+            </div>
         </div>
     </div>
 
@@ -158,10 +211,7 @@ function openCetak(id) {
                 <label>Tanggal Surat</label>
                 <input id="tanggal_surat" type="date" class="swal2-input"
                     value="${new Date().toISOString().slice(0, 10)}">
-
-                <label>Nama Sekretaris</label>
-                <input id="sekretaris" class="swal2-input" value="Sekretaris A">
-            </div>
+            </div> 
         `,
         confirmButtonText: 'Cetak Surat',
         showCancelButton: true,
@@ -239,7 +289,7 @@ function openCetak(id) {
     font-size: 12px;
     border-radius: 6px;
 }
-.status-badge.ongoing { background: #f5e05e; color:#3a2e00; }
+.status-badge.dipinjam { background: #f5e05e; color:#3a2e00; }
 .status-badge.selesai { background: #3cb878; color:#fff; }
 .status-badge.dibatalkan { background: #b3b3b3; color:#fff; }
 
@@ -264,9 +314,97 @@ function openCetak(id) {
 .btn-green { color: #28a745; }
 .btn-blue { color: #0275d8; }
 
+/* Fix input search Select2 */
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    color: #212529 !important;      /* warna teks */
+    background-color: #fff !important;
+    border: 1px solid #ced4da;
+    padding: 6px 10px;
+    font-size: 14px;
+}
+
+/* Placeholder */
+.select2-container--default .select2-search__field::placeholder {
+    color: #6c757d;
+}
+
+/* modal */
+/* ===== MODAL DARK BROWN THEME ===== */
+
+.modal-brown {
+    background: #fdfaf7;
+}
+
+.modal-header-brown {
+    background: linear-gradient(135deg, #4e342e, #6d4c41);
+    color: #fff;
+    border-bottom: none;
+}
+
+.text-brown {
+    color: #000000;
+}
+
+/* BUTTON */
+.btn-brown {
+    background: #4e342e;
+    color: #fff;
+    border: none;
+    transition: .2s;
+}
+
+.btn-brown:hover {
+    background: #262626 ;
+    color: #fff;
+}
+
+.btn-outline-brown {
+    border: 1.5px solid #4e342e;
+    color: #4e342e;
+    background: transparent;
+    transition: .2s;
+}
+
+.btn-outline-brown:hover {
+    background: #262626;
+    color: #fff;
+}
+
+.modal {
+    z-index: 1055 !important;
+}
+.modal-backdrop {
+    z-index: 1050 !important;
+}
 </style>
 
 <link rel="stylesheet"
 href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        tooltipTriggerList.forEach(el => {
+            new bootstrap.Tooltip(el);
+        });
+    });
+
+    $(document).ready(function () {
+        $('.select-search').select2({
+            width: '100%',
+            placeholder: 'Ketik untuk mencari...'
+        });
+    });
+
+    function hapusPeminjaman(url) {
+        const form = document.getElementById('formHapus');
+        form.action = url;
+
+        const modal = new bootstrap.Modal(document.getElementById('hapusModal'));
+        modal.show();
+    }
+</script>
+    
+    
 
 @endsection

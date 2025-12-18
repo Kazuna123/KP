@@ -23,6 +23,10 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 */
 Route::middleware('auth')->group(function () {
 
+    Route::resource('pegawai', PegawaiController::class);
+    Route::resource('kendaraan', KendaraanController::class);
+    Route::resource('peminjaman', PeminjamanController::class);
+
     /*
     |--------------------------------------------------------------------------
     | PROFILE USER
@@ -85,6 +89,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/peminjaman/{peminjaman}/selesai', [PeminjamanController::class, 'selesai'])->name('peminjaman.selesai');
     Route::post('/peminjaman/{peminjaman}/batal', [PeminjamanController::class, 'batal'])->name('peminjaman.batal');
     Route::post('/peminjaman/{peminjaman}/cetak', [PeminjamanController::class, 'cetak'])->name('peminjaman.cetak');
+    
+    Route::get('/search/pegawai', [PegawaiController::class, 'search'])
+    ->name('pegawai.search');
+
+    Route::get('/search/kendaraan', [KendaraanController::class, 'search'])
+        ->name('kendaraan.search');
+
 });
 
 require __DIR__.'/auth.php';

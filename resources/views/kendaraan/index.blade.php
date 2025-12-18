@@ -48,7 +48,7 @@
 
                 <div class="col-md-4">
                     <label class="fw-semibold">Status</label>
-                    <select name="status" class="form-control">
+                    <select name="status" class="form-select">
                         <option value="tersedia">Tersedia</option>
                         <option value="dipinjam">Dipinjam</option>
                         <option value="maintenance">Maintenance</option>
@@ -98,22 +98,29 @@
                             </span>
                         </td>
                         <td>
-                            <div class="action-buttons d-flex flex-column gap-2">
+                            <div class="action-buttons d-flex justify-content-center gap-2">
 
+                                {{-- EDIT --}}
                                 <a href="{{ route('kendaraan.edit', $k->id) }}"
-                                   class="btn-card btn-yellow">
-                                   <i class="bi bi-pencil"></i>
+                                   class="btn-card btn-yellow"
+                                   data-bs-toggle="tooltip"
+                                   data-bs-placement="top"
+                                   title="Edit Kendaraan">
+                                    <i class="bi bi-pencil"></i>
                                 </a>
-
+                            
+                                {{-- HAPUS --}}
                                 <form action="{{ route('kendaraan.destroy', $k->id) }}"
-                                      method="POST"
-                                      onsubmit="return confirm('Yakin hapus?')">
+                                      method="POST">
                                     @csrf @method('DELETE')
-                                    <button class="btn-card btn-red">
+                                    <button type="button"
+                                            class="btn-card btn-red"
+                                            data-bs-toggle="tooltip"
+                                            title="Hapus Data Kendaraan"
+                                            onclick="hapusKendaraan('{{ route('kendaraan.destroy', $k->id) }}')">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </form>
-
                             </div>
                         </td>
                     </tr>
@@ -124,6 +131,44 @@
             </table>
 
             {{ $kendaraans->withQueryString()->links() }}
+        </div>
+    </div>
+    
+    <!-- MODAL KONFIRMASI HAPUS -->
+    <div class="modal fade" id="hapusModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4 modal-brown">
+
+                <div class="modal-header modal-header-brown rounded-top-4">
+                    <h5 class="modal-title">
+                        <i class="bi bi-exclamation-triangle me-2"></i> Konfirmasi Hapus
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body text-center">
+                    <p class="mb-2 fw-semibold text-brown">
+                        Apakah Anda yakin ingin menghapus data kendaraan ini?
+                    </p>
+                    <small class="text-muted">
+                        Data yang dihapus tidak dapat dikembalikan.
+                    </small>
+                </div>
+
+                <div class="modal-footer justify-content-center gap-3">
+                    <button type="button" class="btn btn-outline-brown px-4" data-bs-dismiss="modal">
+                        Batal
+                    </button>
+
+                    <form id="formHapus" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-brown px-4">
+                            <i class="bi bi-trash me-1"></i> Hapus
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -184,8 +229,76 @@
     border-radius: 10px;
     font-weight: bold;
 }
+
+/* modal */
+/* ===== MODAL DARK BROWN THEME ===== */
+
+.modal-brown {
+    background: #fdfaf7;
+}
+
+.modal-header-brown {
+    background: linear-gradient(135deg, #4e342e, #6d4c41);
+    color: #fff;
+    border-bottom: none;
+}
+
+.text-brown {
+    color: #000000;
+}
+
+/* BUTTON */
+.btn-brown {
+    background: #4e342e;
+    color: #fff;
+    border: none;
+    transition: .2s;
+}
+
+.btn-brown:hover {
+    background: #3e2723;
+    color: #fff;
+}
+
+.btn-outline-brown {
+    border: 1.5px solid #4e342e;
+    color: #4e342e;
+    background: transparent;
+    transition: .2s;
+}
+
+.btn-outline-brown:hover {
+    background: #4e342e;
+    color: #fff;
+}
+
+.modal {
+    z-index: 1055 !important;
+}
+.modal-backdrop {
+    z-index: 1050 !important;
+}
 </style>
 
 <link rel="stylesheet"
 href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const tooltipTriggerList = [].slice.call(
+            document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        );
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+
+    function hapusKendaraan(url) {
+        const form = document.getElementById('formHapus');
+        form.action = url;
+
+        const modal = new bootstrap.Modal(document.getElementById('hapusModal'));
+        modal.show();
+    }
+</script>
 @endsection

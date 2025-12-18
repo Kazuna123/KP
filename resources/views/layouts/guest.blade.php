@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>Sistem Pencatatan Kendaraan Dinas | Dinas PU Bina Marga Jatim</title>
+        <title>Sistem Peminjaman Kendaraan Dinas | Dinas PU Bina Marga Jatim</title>
 
         <!-- Favicon -->
         <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
@@ -26,7 +26,7 @@
                     Dinas PU Bina Marga Jawa Timur
                 </h2>
                 <p class="text-sm text-gray-600 text-center mb-6">
-                    Sistem Pencatatan Kendaraan Dinas
+                    Sistem Peminjaman Kendaraan Dinas
                 </p>
             </div>
 

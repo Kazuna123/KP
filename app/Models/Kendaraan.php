@@ -13,6 +13,7 @@ class Kendaraan extends Model
 
     protected $fillable = [
         'pegawai_id',
+        'jenis', 
         'nomor_polisi',
         'merk',
         'tipe',

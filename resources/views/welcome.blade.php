@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pencatatan Kendaraan Dinas</title>
+    <title>Peminjaman Kendaraan Dinas</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     @vite('resources/css/app.css')
 </head>
@@ -20,7 +20,7 @@
         <!-- Content -->
         <div class="relative z-10 max-w-3xl p-8 bg-white/80 backdrop-blur-md rounded-2xl shadow-lg border border-amber-200">
             <h1 class="text-4xl font-bold text-amber-800 mb-4 drop-shadow-lg">
-                Sistem Pencatatan Kendaraan Dinas
+                Sistem Peminjaman Kendaraan Dinas
             </h1>
             <p class="text-lg text-amber-700 mb-8">
                 Dinas PU Bina Marga Jawa Timur — Mewujudkan Efisiensi dan Transparansi Pengelolaan Kendaraan Dinas

@@ -1,7 +1,7 @@
 <x-guest-layout>
     <div>
         <div>
-            <h2 class="text-2xl font-bold text-center text-amber-800 mb-6">Login Pencatatan Kendaraan Dinas</h2>
+            <h2 class="text-2xl font-bold text-center text-amber-800 mb-6">Login Peminjaman Kendaraan Dinas</h2>
             
             <form method="POST" action="{{ route('login') }}">
                 @csrf

@@ -6,9 +6,12 @@
     <title>Kendaraan Dinas</title>
 
     {{-- Bootstrap & Icons --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    
     {{-- Custom --}}
     <style>
         body {
@@ -19,7 +22,7 @@
 
         /* SIDEBAR */
         .sidebar {
-            width: 240px;
+            width: 245px;
             background: #6d4c41;
             height: 100vh;
             position: fixed;
@@ -53,7 +56,7 @@
         .menu-item:hover,
         .menu-active {
             background: #4e342e;
-            transform: translateX(4px);
+            transform: translateX();
         }
 
         .menu-item i {
@@ -70,7 +73,7 @@
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px);}
-            to { opacity: 1; transform: translateY(0);}
+            to { opacity: 2; transform: translateY(0);}
         }
     </style>
 </head>
@@ -117,6 +120,10 @@
     <div class="content">
         @yield('content')
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 </body>
 </html>

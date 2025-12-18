@@ -60,7 +60,7 @@ class PeminjamanController extends Controller
             'tanggal_pinjam' => $request->tanggal_pinjam,
             'tanggal_kembali' => $request->tanggal_kembali,
             'keterangan' => $request->keterangan,
-            'status' => 'ongoing',
+            'status' => 'dipinjam',
             'user_id' => auth()->id(),
         ]);
 

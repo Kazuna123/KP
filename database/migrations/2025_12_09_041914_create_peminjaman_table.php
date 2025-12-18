@@ -22,7 +22,7 @@ return new class extends Migration
 
             $table->text('keterangan')->nullable();
 
-            $table->enum('status', ['ongoing','selesai','dibatalkan'])->default('ongoing');
+            $table->enum('status', ['dipinjam','selesai','dibatalkan'])->default('dipinjam');
 
             $table->foreignId('user_id')->nullable();
 
