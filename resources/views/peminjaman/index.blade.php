@@ -211,7 +211,10 @@ function openCetak(id) {
                 <label>Tanggal Surat</label>
                 <input id="tanggal_surat" type="date" class="swal2-input"
                     value="${new Date().toISOString().slice(0, 10)}">
-            </div> 
+
+                <label>Nama Sekretaris</label>
+                <input id="sekretaris" class="swal2-input" value="Sekretaris A">
+            </div>
         `,
         confirmButtonText: 'Cetak Surat',
         showCancelButton: true,
