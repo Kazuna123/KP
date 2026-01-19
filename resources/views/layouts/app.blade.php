@@ -188,7 +188,7 @@
        
         <a href="{{ route('peminjaman.index') }}"
            class="menu-item {{ request()->is('peminjaman*') ? 'menu-active' : '' }}">
-            <i class="bi bi-arrow-left-right"></i> Peminjaman
+            <i class="bi bi-arrow-left-right"></i> pemakaian
         </a>
 
         <a href="{{ route('logout') }}"

@@ -3,7 +3,7 @@
 @section('content')
 <div class="container-fluid px-4 animate-page">
 
-    <h3 class="mb-4 fw-bold title-header">Peminjaman Kendaraan</h3>
+    <h3 class="mb-4 fw-bold title-header">Pemakaian Kendaraan</h3>
 
     {{-- FORM INPUT PEMINJAMAN --}}
     <div class="card mb-4 p-4 border-0 shadow-section fade-up">
@@ -115,7 +115,7 @@
                                 <button class="btn-card btn-green"
                                         data-bs-toggle="tooltip"
                                         data-bs-placement="left"
-                                        title="Selesaikan Peminjaman">
+                                        title="Selesaikan Pemakaian">
                                     <i class="bi bi-check-circle"></i>
                                 </button>
                             </form>
@@ -135,7 +135,7 @@
                                         class="btn-card btn-red"
                                         data-bs-toggle="tooltip"
                                         data-bs-placement="left"
-                                        title="Hapus Data Peminjaman"
+                                        title="Hapus Data Pemakaian"
                                         onclick="hapusPeminjaman('{{ route('peminjaman.destroy', $pm->id) }}')">
                                     <i class="bi bi-trash"></i>
                                 </button>

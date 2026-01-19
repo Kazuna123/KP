@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
 
-    <h3>Edit Data Peminjaman</h3>
+    <h3>Edit Data Pemakaian</h3>
     <hr>
 
     <form action="{{ route('peminjaman.update', $peminjaman->id) }}" method="POST">
