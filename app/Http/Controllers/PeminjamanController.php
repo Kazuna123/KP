@@ -7,9 +7,19 @@ use App\Models\Pegawai;
 use App\Models\Kendaraan;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf; // pastikan package dompdf terpasang
+use App\Exports\PeminjamanExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PeminjamanController extends Controller
 {
+    public function export()
+    {
+        return Excel::download(
+            new PeminjamanExport,
+            'data_peminjaman.xlsx'
+        );
+    }
+
     public function index(Request $request)
     {
         $q = $request->query('q');

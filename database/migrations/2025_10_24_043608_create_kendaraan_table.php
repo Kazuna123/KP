@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('tipe')->nullable();
             $table->year('tahun')->nullable();
             $table->enum('status', ['tersedia', 'dipinjam', 'maintenance'])->default('tersedia');
-            $table->foreignId('pegawai_id')->nullable()->constrained('pegawai')->nullOnDelete();
+            // $table->foreignId('pegawai_id')->nullable()->constrained('pegawai')->nullOnDelete();
             $table->timestamps();
         });
     }

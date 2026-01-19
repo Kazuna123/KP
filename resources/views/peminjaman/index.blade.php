@@ -64,6 +64,12 @@
 
     {{-- TABEL PEMINJAMAN --}}
     <div class="card p-4 border-0 shadow-section fade-up delay-1">
+        <div class="d-flex justify-content-end mb-3">
+            <a href="{{ route('peminjaman.export') }}"
+               class="btn btn-success shadow-btn">
+                <i class="bi bi-file-earmark-excel me-1"></i> Export Excel
+            </a>
+        </div>        
         <div class="table-responsive">
             <table class="table table-hover table-striped align-middle text-center">
                 <thead class="table-header">

@@ -75,6 +75,72 @@
             from { opacity: 0; transform: translateY(10px);}
             to { opacity: 2; transform: translateY(0);}
         }
+
+        /* SUBMENU*/
+        .submenu {
+        max-height: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        padding-left: 28px;
+        transition: max-height 0.35s ease;
+        }
+
+        .submenu.show {
+            max-height: 500px; /* cukup besar */
+        }
+
+        .has-sub {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .submenu-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .has-sub.open .submenu-icon {
+            transform: rotate(180deg);
+        }
+
+        /*untuk UI maintenance*/
+        .btn-soft-warning {
+            background-color: #fff7e6;
+            color: #f59e0b;
+            border: 1px solid #fde68a;
+            transition: all .2s ease;
+        }
+
+        .btn-soft-warning:hover {
+            background-color: #f59e0b;
+            color: #fff;
+        }
+
+        .btn-soft-danger {
+            background-color: #fff1f2;
+            color: #ef4444;
+            border: 1px solid #fecaca;
+            transition: all .2s ease;
+        }
+
+        .btn-soft-danger:hover {
+            background-color: #ef4444;
+            color: #fff;
+        }
+
+        .btn-soft-success {
+            background-color: #ecfdf5;
+            color: #10b981;
+            border: 1px solid #a7f3d0;
+            transition: all .2s ease;
+        }
+
+        .btn-soft-success:hover {
+            background-color: #10b981;
+            color: #fff;
+        }
+
     </style>
 </head>
 <body>
@@ -95,11 +161,31 @@
             <i class="bi bi-people"></i> Pegawai
         </a>
 
-        <a href="{{ route('kendaraan.index') }}"
-           class="menu-item {{ request()->is('kendaraan*') ? 'menu-active' : '' }}">
-            <i class="bi bi-truck-front"></i> Kendaraan
-        </a>
-
+        <div class="menu-item has-sub {{ request()->is('kendaraan*') ? 'menu-active open' : '' }}"
+            onclick="toggleSubmenu('submenu-kendaraan')">
+           <i class="bi bi-truck-front"></i> Kendaraan
+           <i class="bi bi-chevron-down ms-auto submenu-icon"></i>
+       </div>
+       
+       <div class="submenu {{ request()->is('kendaraan*') ? 'show' : '' }}"
+            id="submenu-kendaraan">
+       
+           <a href="{{ route('kendaraan.index') }}"
+              class="menu-item {{ request()->is('kendaraan*') ? 'menu-active' : '' }}">
+               <i class="bi bi-dot"></i> Data Kendaraan
+           </a>
+       
+           <a href="{{ route('maintenance.index') }}"
+              class="menu-item">
+               <i class="bi bi-tools"></i> Maintenance
+           </a>
+       
+           <a href="{{ route('pajak.index') }}"
+              class="menu-item">
+               <i class="bi bi-receipt"></i> Pajak Kendaraan
+           </a>
+       </div>
+       
         <a href="{{ route('peminjaman.index') }}"
            class="menu-item {{ request()->is('peminjaman*') ? 'menu-active' : '' }}">
             <i class="bi bi-arrow-left-right"></i> Peminjaman
@@ -121,6 +207,16 @@
         @yield('content')
     </div>
 
+    <script>
+        function toggleSubmenu(id) {
+            const submenu = document.getElementById(id);
+            const parent = submenu.previousElementSibling;
+        
+            submenu.classList.toggle('show');
+            parent.classList.toggle('open');
+        }
+    </script>        
+    </script>        
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>

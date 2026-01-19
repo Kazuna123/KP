@@ -7,18 +7,25 @@
 
     {{-- FORM INPUT --}}
     <div class="card mb-4 p-4 border-0 shadow-section fade-up">
-        <form method="POST" action="{{ route('kendaraan.store') }}">
+        <form method="POST"
+            action="{{ route('kendaraan.store') }}"
+            enctype="multipart/form-data">
             @csrf
+
             <div class="row g-3">
 
                 <div class="col-md-4">
                     <label class="fw-semibold">Jenis Kendaraan</label>
-                    <input type="text" name="jenis" class="form-control" placeholder="Roda 2 / Roda 4" required>
+                    <input type="text" name="jenis" class="form-control"
+                        placeholder="Roda 2 / Roda 4" required>
                 </div>
 
                 <div class="col-md-4">
                     <label class="fw-semibold">Nomor Polisi</label>
                     <input type="text" name="nomor_polisi" class="form-control" required>
+                    @error('nomor_polisi')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror                    
                 </div>
 
                 <div class="col-md-4">
@@ -46,6 +53,30 @@
                     <input type="text" name="nomor_mesin" class="form-control">
                 </div>
 
+                {{-- FOTO KENDARAAN --}}
+                <div class="col-md-4">
+                    <label class="fw-semibold">
+                        Foto Kendaraan
+                        <small class="text-muted">(jpg / png)</small>
+                    </label>
+                    <input type="file"
+                        name="foto_kendaraan"
+                        class="form-control"
+                        accept="image/*">
+                </div>
+
+                {{-- FOTO STNK --}}
+                <div class="col-md-4">
+                    <label class="fw-semibold">
+                        Foto STNK
+                        <small class="text-muted">(jpg / png)</small>
+                    </label>
+                    <input type="file"
+                        name="foto_stnk"
+                        class="form-control"
+                        accept="image/*">
+                </div>
+
                 <div class="col-md-4">
                     <label class="fw-semibold">Status</label>
                     <select name="status" class="form-select">
@@ -55,12 +86,20 @@
                     </select>
                 </div>
 
+                {{-- KONDISI KENDARAAN --}}
+                <div class="col-md-4">
+                    <label class="fw-semibold">Kondisi Kendaraan</label>
+                    <select name="kondisi" class="form-select" required>
+                        <option value="baik">Baik</option>
+                        <option value="rusak_ringan">Rusak Ringan</option>
+                        <option value="rusak_berat">Rusak Berat</option>
+                    </select>
+                </div>
                 <div class="col-md-4 d-flex align-items-end">
-                    <button class="btn btn-success shadow-btn">
+                    <button class="btn btn-success shadow-btn w-100">
                         <i class="bi bi-plus-lg me-1"></i> Tambah
                     </button>
                 </div>
-
             </div>
         </form>
     </div>
@@ -71,14 +110,15 @@
             <table class="table table-hover table-striped align-middle text-center">
                 <thead class="table-header">
                     <tr>
-                        <th>#</th>
+                        <th>No</th>
                         <th>Jenis</th>
                         <th>Nopol</th>
                         <th>Merk / Tipe</th>
                         <th>Tahun</th>
-                        <th>No. Rangka</th>
-                        <th>No. Mesin</th>
+                        <th>Kondisi</th>
                         <th>Status</th>
+                        <th>Foto</th>
+                        <th>STNK</th>
                         <th width="120">Aksi</th>
                     </tr>
                 </thead>
@@ -90,44 +130,74 @@
                         <td>{{ $k->nomor_polisi }}</td>
                         <td>{{ $k->merk }} / {{ $k->tipe }}</td>
                         <td>{{ $k->tahun }}</td>
-                        <td>{{ $k->nomor_rangka ?? '-' }}</td>
-                        <td>{{ $k->nomor_mesin ?? '-' }}</td>
+                    
+                        {{-- KONDISI --}}
+                        <td>
+                            <span class="badge 
+                                {{ $k->kondisi == 'baik' ? 'bg-success' : 
+                                   ($k->kondisi == 'rusak ringan' ? 'bg-warning' : 'bg-danger') }}">
+                                {{ ucfirst($k->kondisi) }}
+                            </span>
+                        </td>
+                    
+                        {{-- STATUS --}}
                         <td>
                             <span class="badge status-badge {{ $k->status }}">
                                 {{ ucfirst($k->status) }}
                             </span>
                         </td>
+                    
+                        {{-- FOTO KENDARAAN --}}
+                        <td>
+                            @if($k->foto_kendaraan)
+                                <a href="{{ asset('storage/'.$k->foto_kendaraan) }}" target="_blank">
+                                    <img src="{{ asset('storage/'.$k->foto_kendaraan) }}"
+                                         class="img-thumbnail"
+                                         style="width:50px; height:50px; object-fit:cover;">
+                                </a>
+                            @else
+                                <span class="text-muted">-</span>
+                            @endif
+                        </td>
+                    
+                        {{-- FOTO STNK --}}
+                        <td>
+                            @if($k->foto_stnk)
+                                <a href="{{ asset('storage/'.$k->foto_stnk) }}" target="_blank"
+                                   class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-file-earmark-text"></i>
+                                </a>
+                            @else
+                                <span class="text-muted">-</span>
+                            @endif
+                        </td>
+                    
+                        {{-- AKSI --}}
                         <td>
                             <div class="action-buttons d-flex justify-content-center gap-2">
-
-                                {{-- EDIT --}}
                                 <a href="{{ route('kendaraan.edit', $k->id) }}"
-                                   class="btn-card btn-yellow"
-                                   data-bs-toggle="tooltip"
-                                   data-bs-placement="top"
-                                   title="Edit Kendaraan">
+                                    class="btn-card btn-yellow"
+                                    data-bs-toggle="tooltip"
+                                    title="Edit Kendaraan">
                                     <i class="bi bi-pencil"></i>
                                 </a>
-                            
-                                {{-- HAPUS --}}
-                                <form action="{{ route('kendaraan.destroy', $k->id) }}"
-                                      method="POST">
-                                    @csrf @method('DELETE')
-                                    <button type="button"
-                                            class="btn-card btn-red"
-                                            data-bs-toggle="tooltip"
-                                            title="Hapus Data Kendaraan"
-                                            onclick="hapusKendaraan('{{ route('kendaraan.destroy', $k->id) }}')">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </form>
+                    
+                                <button type="button"
+                                        class="btn-card btn-red"
+                                        onclick="hapusKendaraan('{{ route('kendaraan.destroy', $k->id) }}')"
+                                        data-bs-toggle="tooltip"
+                                        title="Hapus Data Kendaraan">
+                                    <i class="bi bi-trash"></i>
+                                </button>
                             </div>
                         </td>
                     </tr>
                     @empty
-                    <tr><td colspan="10" class="text-muted">Tidak ada data...</td></tr>
+                    <tr>
+                        <td colspan="10" class="text-muted">Tidak ada data...</td>
+                    </tr>
                     @endforelse
-                </tbody>
+                </tbody>                    
             </table>
 
             {{ $kendaraans->withQueryString()->links() }}

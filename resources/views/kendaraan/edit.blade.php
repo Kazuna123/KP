@@ -6,7 +6,7 @@
     <h3 class="mb-3">Edit Data Kendaraan</h3>
 
     <div class="card p-4 shadow-sm">
-        <form action="{{ route('kendaraan.update', $kendaraan->id) }}" method="POST">
+        <form action="{{ route('kendaraan.update', $kendaraan->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -63,6 +63,45 @@
                     </select>
                 </div>
 
+                <div class="col-md-4">
+                    <label class="fw-semibold">Kondisi Kendaraan</label>
+                    <select name="kondisi" class="form-select" required>
+                        <option value="baik" {{ $kendaraan->kondisi == 'baik' ? 'selected' : '' }}>Baik</option>
+                        <option value="rusak_ringan" {{ $kendaraan->kondisi == 'rusak_ringan' ? 'selected' : '' }}>Rusak Ringan</option>
+                        <option value="rusak_berat" {{ $kendaraan->kondisi == 'rusak_berat' ? 'selected' : '' }}>Rusak Berat</option>
+                    </select>
+                </div>                
+
+                <div class="col-md-6">
+                    <label class="fw-semibold">Foto Kendaraan</label>
+                
+                    @if($kendaraan->foto_kendaraan)
+                        <div class="mb-2">
+                            <img src="{{ asset('storage/'.$kendaraan->foto_kendaraan) }}"
+                                 width="200"
+                                 class="img-thumbnail">
+                        </div>
+                    @endif
+                
+                    <input type="file" name="foto_kendaraan" class="form-control">
+                    <small class="text-muted">Kosongkan jika tidak ingin mengganti</small>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="fw-semibold">Foto STNK</label>
+                
+                    @if($kendaraan->foto_stnk)
+                        <div class="mb-2">
+                            <img src="{{ asset('storage/'.$kendaraan->foto_stnk) }}"
+                                 width="200"
+                                 class="img-thumbnail">
+                        </div>
+                    @endif
+                
+                    <input type="file" name="foto_stnk" class="form-control">
+                    <small class="text-muted">Kosongkan jika tidak ingin mengganti</small>
+                </div>
+                
             </div>
 
             <div class="mt-3">

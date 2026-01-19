@@ -22,9 +22,31 @@ class Kendaraan extends Model
         'nomor_rangka',
         'nomor_mesin',
         'fungsi',
-        'ket'
+        'ket',
+        'nama_kendaraan',
+        'kondisi',
+        'foto_kendaraan',
+        'foto_stnk'
     ];
 
+    
+    /*
+    |--------------------------------------------------------------------------
+    | RELATIONSHIPS
+    |--------------------------------------------------------------------------
+    */
+
+    // 1 kendaraan punya banyak maintenance
+    public function maintenance()
+    {
+        return $this->hasMany(MaintenanceKendaraan::class);
+    }
+
+    // 1 kendaraan punya banyak pajak
+    public function pajak()
+    {
+        return $this->hasMany(PajakKendaraan::class);
+    }
     public function pegawai()
     {
         return $this->belongsTo(\App\Models\Pegawai::class, 'pegawai_id');

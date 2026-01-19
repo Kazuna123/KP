@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kendaraan;
+use App\Models\MaintenanceKendaraan;
+use App\Models\PajakKendaraan;
 use App\Models\Pegawai;
-use App\Models\ArsipSurat;
 use Illuminate\Http\Request;
-
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
-use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
 
 class KendaraanController extends Controller
 {
@@ -49,7 +46,22 @@ class KendaraanController extends Controller
             'nomor_rangka' => 'nullable|string',
             'nomor_mesin' => 'nullable|string',
             'status' => 'required|in:tersedia,dipinjam,maintenance',
+            'kondisi'        => 'required|in:baik,rusak_ringan,rusak_berat',
+            'foto_kendaraan' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'foto_stnk'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+
+        // upload foto kendaraan
+        if ($request->hasFile('foto_kendaraan')) {
+            $validated['foto_kendaraan'] =
+                $request->file('foto_kendaraan')->store('kendaraan', 'public');
+        }
+
+        // upload foto stnk
+        if ($request->hasFile('foto_stnk')) {
+            $validated['foto_stnk'] =
+                $request->file('foto_stnk')->store('kendaraan', 'public');
+        }
 
         Kendaraan::create($validated);
 
@@ -68,74 +80,61 @@ class KendaraanController extends Controller
 
     public function update(Request $request, $id)
     {
+        $kendaraan = Kendaraan::findOrFail($id);
+
         $validated = $request->validate([
             'jenis' => 'required',
-            'nomor_polisi' => 'required',
+            'nomor_polisi' => 'required|unique:kendaraan,nomor_polisi,' . $kendaraan->id,
             'merk' => 'required',
             'tipe' => 'required',
-            'tahun' => 'required|numeric',
+            'tahun' => 'required|digits:4|integer|min:1900|max:' . date('Y'),
             'nomor_rangka' => 'nullable',
             'nomor_mesin' => 'nullable',
             'status' => 'required',
+            'kondisi' => 'required|in:baik,rusak_ringan,rusak_berat',
+            'foto_kendaraan' => 'nullable|image|max:2048',
+            'foto_stnk' => 'nullable|image|max:2048',
         ]);
 
-        $kendaraan = Kendaraan::findOrFail($id);
+        // 🔁 GANTI FOTO KENDARAAN
+        if ($request->hasFile('foto_kendaraan')) {
+            if ($kendaraan->foto_kendaraan) {
+                Storage::disk('public')->delete($kendaraan->foto_kendaraan);
+            }
+            $validated['foto_kendaraan'] =
+                $request->file('foto_kendaraan')->store('kendaraan', 'public');
+        }
+
+        // 🔁 GANTI FOTO STNK
+        if ($request->hasFile('foto_stnk')) {
+            if ($kendaraan->foto_stnk) {
+                Storage::disk('public')->delete($kendaraan->foto_stnk);
+            }
+            $validated['foto_stnk'] =
+                $request->file('foto_stnk')->store('kendaraan', 'public');
+        }
+
         $kendaraan->update($validated);
 
-        return redirect()->route('kendaraan.index')->with('success', 'Data kendaraan berhasil diperbarui!');
+        return redirect()->route('kendaraan.index')
+            ->with('success', 'Data kendaraan berhasil diperbarui!');
     }
+
 
 
     public function destroy(Kendaraan $kendaraan)
     {
+        // if ($kendaraan->foto_kendaraan) {
+        //     Storage::disk('public')->delete($kendaraan->foto_kendaraan);
+        // }
+
+        // if ($kendaraan->foto_stnk) {
+        //     Storage::disk('public')->delete($kendaraan->foto_stnk);
+        // }
+
         $kendaraan->delete();
 
         return redirect()->route('kendaraan.index')
             ->with('success','Data kendaraan berhasil dihapus.');
-    }
-
-    /* ============================================================
-     *  CETAK PDF PEMUTIHAN
-     * ============================================================ */
-    public function cetakPemutihan(Request $request, Kendaraan $kendaraan)
-    {
-        $request->validate([
-            'nomor_surat' => 'required',
-            'tanggal_surat' => 'required|date',
-            'sekretaris' => 'required'
-        ]);
-
-        $data = [
-            'kendaraan' => $kendaraan->load('pegawai'),
-            'nomor_surat' => $request->nomor_surat,
-            'tanggal_surat' => $request->tanggal_surat,
-            'sekretaris' => $request->sekretaris
-        ];
-
-        $pdf = Pdf::loadView('pdf.surat_pemutihan', $data)->setPaper('A4', 'portrait');
-        return $pdf->stream('surat_pemutihan_'.$kendaraan->nomor_polisi.'.pdf');
-    }
-
-
-    /* ============================================================
-     *  CETAK PDF SPBKB
-     * ============================================================ */
-    public function cetakSpbkb(Request $request, Kendaraan $kendaraan)
-    {
-        $request->validate([
-            'nomor_surat' => 'required',
-            'tanggal_surat' => 'required|date',
-            'sekretaris' => 'required'
-        ]);
-
-        $data = [
-            'kendaraan' => $kendaraan->load('pegawai'),
-            'nomor_surat' => $request->nomor_surat,
-            'tanggal_surat' => $request->tanggal_surat,
-            'sekretaris' => $request->sekretaris
-        ];
-
-        $pdf = Pdf::loadView('pdf.spbkb', $data)->setPaper('A4', 'portrait');
-        return $pdf->stream('spbkb_'.$kendaraan->nomor_polisi.'.pdf');
     }
 }
