@@ -3,16 +3,16 @@
 @section('content')
 <div class="container-fluid px-4">
 
-    <h3 class="mb-4 fw-bold">
+    <h3 class="fw-bold mb-0">
         <i class="bi bi-tools me-2"></i> Maintenance Kendaraan
-    </h3>    
+    </h3>
 
     {{-- DROPDOWN PILIH KENDARAAN --}}
     <form method="GET" action="{{ route('maintenance.index') }}" class="mb-4">
         <label class="mb-1 text-muted fw-semibold">Filter Kendaraan</label>
             <select name="kendaraan_id"
                     class="form-select select2 shadow-sm"
-                    onchange="this.form.submit()">        
+                    onchange="this.form.submit()">
             <option value="">-- Semua Kendaraan --</option>
 
             @foreach($kendaraans as $k)
@@ -64,7 +64,7 @@
                     <button class="btn btn-soft-success px-4">
                         <i class="fa-solid fa-floppy-disk me-1"></i>
                         Simpan Maintenance
-                    </button>                    
+                    </button>
                 </div>
             </div>
         </form>
@@ -106,7 +106,7 @@
                                    title="Edit">
                                     <i class="bi bi-pencil"></i>
                                 </a>
-                        
+
                                 <form action="{{ route('maintenance.destroy', $m->id) }}"
                                       method="POST"
                                       onsubmit="return confirm('Yakin ingin menghapus data maintenance ini?')">
@@ -117,7 +117,7 @@
                                 </form>
                             </div>
                         </td>
-                        
+
                     </tr>
                     @empty
                     <tr>
@@ -138,23 +138,23 @@
         border-radius: 14px;
         border: none;
     }
-    
+
     /* TABLE */
     .table thead th {
         font-size: 13px;
         text-transform: uppercase;
         letter-spacing: .04em;
     }
-    
+
     .table tbody tr {
         transition: all .25s ease;
     }
-    
+
     .table tbody tr:hover {
         background-color: #f8f9fa;
         transform: scale(1.005);
     }
-    
+
     /* BUTTON SOFT */
     .btn-soft-success {
         background: rgba(25, 135, 84, 0.15);
@@ -166,7 +166,7 @@
         background: #198754;
         color: #fff;
     }
-    
+
     .btn-soft-warning {
         background: rgba(255, 193, 7, 0.2);
         color: #856404;
@@ -176,7 +176,7 @@
         background: #ffc107;
         color: #000;
     }
-    
+
     .btn-soft-danger {
         background: rgba(220, 53, 69, 0.2);
         color: #842029;
@@ -186,14 +186,14 @@
         background: #dc3545;
         color: #fff;
     }
-    
+
     /* ACTION BUTTON GROUP */
     .action-btn {
         display: flex;
         gap: 6px;
         justify-content: center;
     }
-    
+
     /* SMOOTH FADE */
     .fade-in {
         animation: fadeIn .4s ease-in-out;
@@ -203,5 +203,5 @@
         to { opacity: 1; transform: translateY(0); }
     }
 </style>
-    
+
 @endsection

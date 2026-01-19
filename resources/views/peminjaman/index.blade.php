@@ -1,9 +1,14 @@
 @extends('layouts.app')
 
+
 @section('content')
 <div class="container-fluid px-4 animate-page">
 
-    <h3 class="mb-4 fw-bold title-header">Pemakaian Kendaraan</h3>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold mb-0">
+            <i class="bi bi-arrow-left-right me-2"></i> Pemakaian Kendaraan
+        </h3>
+    </div>
 
     {{-- FORM INPUT PEMINJAMAN --}}
     <div class="card mb-4 p-4 border-0 shadow-section fade-up">
@@ -69,7 +74,7 @@
                class="btn btn-success shadow-btn">
                 <i class="bi bi-file-earmark-excel me-1"></i> Export Excel
             </a>
-        </div>        
+        </div>
         <div class="table-responsive">
             <table class="table table-hover table-striped align-middle text-center">
                 <thead class="table-header">
@@ -120,7 +125,7 @@
                                 </button>
                             </form>
                             @endif
-                            
+
                             <a href="{{ route('peminjaman.edit', $pm->id) }}"
                                 class="btn-card btn-yellow"
                                 data-bs-toggle="tooltip"
@@ -413,7 +418,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.c
         modal.show();
     }
 </script>
-    
-    
+
+
 
 @endsection

@@ -3,7 +3,9 @@
 @section('content')
 <div class="container-fluid px-4 animate-page">
 
-    <h3 class="mb-4 fw-bold title-header">Manajemen Pegawai</h3>
+    <h3 class="fw-bold mb-0">
+        <i class="bi bi-people me-2"></i> Manajemen Pegawai
+    </h3>
 
     {{-- Tombol Tambah --}}
     <div class="d-flex justify-content-end mb-3">
@@ -54,7 +56,7 @@
                                 data-bs-placement="top"
                                 title="Edit Pegawai">
                                  <i class="bi bi-pencil-square"></i>
-                            </a>                        
+                            </a>
 
                             {{-- Hapus --}}
                             <form action="{{ route('pegawai.destroy', $item->id) }}"
@@ -71,7 +73,7 @@
                         </div>
                     </td>
                 </tr>
-               
+
                 @empty
                 <tr>
                     <td colspan="10" class="text-muted">Tidak ada data...</td>
@@ -242,5 +244,5 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.c
         modal.show();
     }
 </script>
-    
+
 @endsection

@@ -11,7 +11,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    
+
     {{-- Custom --}}
     <style>
         body {
@@ -141,9 +141,71 @@
             color: #fff;
         }
 
+        /* NAVBAR SELARAS SIDEBAR */
+        .navbar-custom {
+            background: #6d4c41;
+            height: 64px;
+            padding-left: 270px; /* sejajar setelah sidebar */
+        }
+
+        .navbar-custom .navbar-brand {
+            color: #fff;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .navbar-custom .nav-link {
+            color: #f5f5f5;
+            font-size: 14.5px;
+            margin-right: 8px;
+            border-radius: 8px;
+            padding: 6px 12px;
+            transition: .25s;
+        }
+
+        .navbar-custom .nav-link:hover,
+        .navbar-custom .nav-link.active {
+            background: #4e342e;
+            color: #fff;
+        }
+
+        .navbar-custom .dropdown-menu {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 8px 20px rgba(0,0,0,.15);
+        }
+
+        .navbar-custom .dropdown-item:hover {
+            background: #f6f3ee;
+        }
+
+        /* CONTENT ADJUST */
+        .content {
+            margin-left: 250px;
+            padding: 90px 40px 30px;
+        }
+
     </style>
 </head>
 <body>
+    {{-- NAVBAR --}}
+    <nav class="navbar navbar-expand-lg navbar-custom shadow">
+        <div class="container-fluid">
+
+            {{-- spacer agar ke kanan --}}
+            <div class="ms-auto">
+                {{-- LOGOUT --}}
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button class="btn btn-outline-light btn-sm">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </nav>
+
 
     {{-- Sidebar --}}
     <nav class="sidebar shadow-lg">
@@ -166,32 +228,32 @@
            <i class="bi bi-truck-front"></i> Kendaraan
            <i class="bi bi-chevron-down ms-auto submenu-icon"></i>
        </div>
-       
+
        <div class="submenu {{ request()->is('kendaraan*') ? 'show' : '' }}"
             id="submenu-kendaraan">
-       
+
            <a href="{{ route('kendaraan.index') }}"
               class="menu-item {{ request()->is('kendaraan*') ? 'menu-active' : '' }}">
                <i class="bi bi-dot"></i> Data Kendaraan
            </a>
-       
+
            <a href="{{ route('maintenance.index') }}"
               class="menu-item">
                <i class="bi bi-tools"></i> Maintenance
            </a>
-       
+
            <a href="{{ route('pajak.index') }}"
               class="menu-item">
                <i class="bi bi-receipt"></i> Pajak Kendaraan
            </a>
        </div>
-       
+
         <a href="{{ route('peminjaman.index') }}"
            class="menu-item {{ request()->is('peminjaman*') ? 'menu-active' : '' }}">
             <i class="bi bi-arrow-left-right"></i> pemakaian
         </a>
 
-        <a href="{{ route('logout') }}"
+        {{-- <a href="{{ route('logout') }}"
            class="menu-item"
            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
            <i class="bi bi-box-arrow-right"></i> Logout
@@ -199,7 +261,7 @@
 
         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">
             @csrf
-        </form>
+        </form> --}}
     </nav>
 
     {{-- Main Content --}}
@@ -211,12 +273,12 @@
         function toggleSubmenu(id) {
             const submenu = document.getElementById(id);
             const parent = submenu.previousElementSibling;
-        
+
             submenu.classList.toggle('show');
             parent.classList.toggle('open');
         }
-    </script>        
-    </script>        
+    </script>
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>

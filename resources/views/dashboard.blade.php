@@ -3,9 +3,11 @@
 @section('content')
 <div class="container-fluid px-4 animate-page">
 
-    <h3 class="mb-4 fw-bold title-header">
-        Dashboard Kendaraan Dinas
-    </h3>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold mb-0">
+            <i class="bi bi-speedometer me-2"></i> Dashboard Kendaraan Dinas
+        </h3>
+    </div>
 
     {{-- CARD STATISTIK --}}
     <div class="row g-4 fade-up">
@@ -16,7 +18,7 @@
                     <i class="bi bi-people-fill"></i>
                 </div>
                 <h6 class="label">Total Pegawai</h6>
-                <h2 class="value">{{ $totalPegawai }}</h2> 
+                <h2 class="value">{{ $totalPegawai }}</h2>
             </div>
         </div>
 
@@ -36,7 +38,7 @@
                     <i class="bi bi-arrow-left-right"></i>
                 </div>
                 <h6 class="label">Total Peminjaman</h6>
-                <h2 class="value">{{ $totalPeminjaman }}</h2>                
+                <h2 class="value">{{ $totalPeminjaman }}</h2>
             </div>
         </div>
 
